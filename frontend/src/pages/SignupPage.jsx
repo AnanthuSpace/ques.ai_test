@@ -3,36 +3,44 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Link, useNavigate } from "react-router-dom";
-import { loginApi } from "../api/authApi";
+import { signupApi } from "../api/authApi";
 import { toast } from "sonner";
 
-const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" }),
-});
+const signupSchema = z
+  .object({
+    name: z.string().min(3, { message: "Name must be at least 3 characters" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Confirm Password must be at least 6 characters" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-const LoginPage = () => {
+const SignupPage = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data) => {
     try {
-      const response = await loginApi(data);
-      
+      const response = await signupApi(data);
+
       if (response.success) {
-        toast.success(response.message || "Login successful");
-        localStorage.setItem("accessToken", response.token)
-        navigate("/");
+        toast.success(response.message || "Signup successful");
+        navigate("/login");
       } else {
-        toast.error(response.message || "Login failed");
+        toast.error(response.message || "Signup failed");
       }
     } catch (error) {
       console.error(error);
@@ -43,7 +51,7 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen w-full">
       <div
-        className="hidden md:flex w-4/6 h-screen bg-blue-500 bg-cover bg-center bg-no-repeat flex-col p-12 text-white relative"
+        className="hidden md:flex w-4/6 h-screen bg-blue-500 bg-cover bg-center bg-no-repeat flex-col p-12 text-white"
         style={{ backgroundImage: "url('/Login.svg')" }}
       >
         <div className="flex items-center gap-2 mb-10">
@@ -56,8 +64,7 @@ const LoginPage = () => {
 
         <div className="w-1/2">
           <p className="text-6xl font-medium leading-snug">
-            Your podcast
-            <br /> will no longer <br /> be just a hobby.
+            Your podcast <br /> will no longer <br /> be just a hobby.
           </p>
           <p className="mt-6 text-2xl">
             Supercharge your distribution <br /> using our AI assistant!
@@ -67,7 +74,7 @@ const LoginPage = () => {
 
       <div className="w-full md:w-2/6 bg-white flex items-center justify-center p-8">
         <form
-          className="w-full flex flex-col gap-4 px-5"
+          className="w-full flex flex-col gap-2 px-5"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex justify-center mb-4">
@@ -85,10 +92,24 @@ const LoginPage = () => {
 
           <div className="flex flex-col gap-1">
             <input
+              type="text"
+              placeholder="Enter your name"
+              {...register("name")}
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.name && (
+              <span className="text-red-500 text-sm">
+                {errors.name.message}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <input
               type="email"
               placeholder="Enter your email"
               {...register("email")}
-              className="p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.email && (
               <span className="text-red-500 text-sm">
@@ -102,7 +123,7 @@ const LoginPage = () => {
               type="password"
               placeholder="Enter your password"
               {...register("password")}
-              className="p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.password && (
               <span className="text-red-500 text-sm">
@@ -111,43 +132,49 @@ const LoginPage = () => {
             )}
           </div>
 
-          <div className="flex justify-between items-center text-sm">
-            <div className="flex items-center gap-2">
-              <input type="checkbox" id="remember" className="w-4 h-4" />
-              <label htmlFor="remember" className="text-gray-600">
-                Remember me
-              </label>
-            </div>
-            <a href="#" className="text-blue-600 hover:underline">
-              Forgot Password?
-            </a>
+          <div className="flex flex-col gap-1">
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              {...register("confirmPassword")}
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.confirmPassword && (
+              <span className="text-red-500 text-sm">
+                {errors.confirmPassword.message}
+              </span>
+            )}
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full p-3 bg-main-text text-white rounded-lg transition"
           >
-            Login
+            Sign Up
           </button>
 
+          {/* OR Section */}
           <div className="flex items-center gap-2 my-4">
             <hr className="flex-grow border-gray-300" />
             <span className="text-gray-400">OR</span>
             <hr className="flex-grow border-gray-300" />
           </div>
 
+          {/* Google Sign Up Button */}
           <button
             type="button"
             className="w-full p-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition flex items-center justify-center gap-2"
           >
             <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
-            Sign in with Google
+            Sign up with Google
           </button>
 
+          {/* Redirect to Login */}
           <p className="text-center text-sm mt-4 text-gray-600">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="text-blue-600 hover:underline">
-              Create Account
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600 hover:underline">
+              Login
             </Link>
           </p>
         </form>
@@ -156,4 +183,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
