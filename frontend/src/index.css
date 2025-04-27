@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.main-text {
+  color: #7E22CE;
+}
+
+.bg-main-text {
+  background-color: #7E22CE;
+}
+
+.bg-main-text:hover {
+  background-color: #8b45c9;
+}
