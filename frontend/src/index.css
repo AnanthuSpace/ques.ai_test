@@ -11,3 +11,7 @@
 .bg-main-text:hover {
   background-color: #8b45c9;
 }
+
+.border-main-text {
+  border-color: #7E22CE;
+}

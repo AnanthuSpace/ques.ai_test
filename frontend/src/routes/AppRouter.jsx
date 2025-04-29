@@ -6,6 +6,9 @@ import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import PublicRoute from "../components/PublicRoute";
+import AddPodcastPage from "../pages/AddPodcastPage";
+import PodcastPage from "../pages/PodcastPage";
+import ProfilePage from "../pages/ProfilePage";
 
 const AppRouter = () => {
   return (
@@ -16,6 +19,9 @@ const AppRouter = () => {
         <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
           <Route index element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         </Route>
+          <Route path="/addpodcast" element={<ProtectedRoute><AddPodcastPage /></ProtectedRoute>} />
+          <Route path="/podcast" element={<ProtectedRoute><PodcastPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
