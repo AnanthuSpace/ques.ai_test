@@ -3,9 +3,21 @@ import Sidebar from "../components/Sidebar";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { useNavigate } from "react-router-dom";
 import LogoutIcone from "../components/LogoutIcone";
+import { useEffect, useState } from "react";
+import { getProfileApi } from "../api/userApi";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await getProfileApi();
+      console.log(res.userData);
+      setUser(res.userData);
+    };
+    fetchUser();
+  }, []);
 
   return (
     <div className="flex h-screen">
@@ -43,33 +55,35 @@ const ProfilePage = () => {
               </div>
 
               {/* User Info Fields */}
-              <div className="flex-1 grid md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="block text-gray-700 mb-2"
-                  >
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-purple-200"
-                    defaultValue="alphauser"
-                  />
+              {user && (
+                <div className="flex-1 grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="username"
+                      className="block text-gray-700 mb-2"
+                    >
+                      User Name
+                    </label>
+                    <input
+                      type="text"
+                      id="username"
+                      className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-purple-200"
+                      defaultValue={user.name}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-gray-700 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-purple-200"
+                      defaultValue={user.email}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label htmlFor="email" className="block text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-purple-200"
-                    defaultValue="alphauser@gmail.com"
-                  />
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Subscriptions Section */}

@@ -26,3 +26,29 @@ export const fetchProjectsApi = async () => {
         }
     }
 }
+
+export const getProfileApi = async () => {
+    try {
+        const response = await userAxiosInstance.get(`/api/get-profile`)
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return error.response.data;
+        } else {
+            throw error;
+        }
+    }
+}
+
+export const updateProfileApi = async () => {
+    try {
+        const response = await userAxiosInstance.get(`/api/profile-update`)
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return error.response.data;
+        } else {
+            throw error;
+        }
+    }
+}
