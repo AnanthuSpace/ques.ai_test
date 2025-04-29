@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProjectCard = ({
   projectName = "",
   fileCount = 0,
   lastUpdated = new Date().toISOString(),
 }) => {
+  const navigate = useNavigate();
+
   const getInitials = (name = "") => {
     const words = name.trim().split(/\s+/);
     if (words.length >= 2) {
@@ -24,8 +27,17 @@ const ProjectCard = ({
         });
   };
 
+  const handleClick = () => {
+    navigate("/addpodcast", {
+      state: { projectName },
+    });
+  };
+
   return (
-    <div className="flex items-center bg-white rounded-lg shadow p-2 hover:shadow-md transition">
+    <div
+      className="flex items-center bg-white rounded-lg shadow p-2 hover:shadow-md transition"
+      onClick={handleClick}
+    >
       <div className="flex-none w-23 h-18 bg-orange-400 text-white rounded flex items-center justify-center text-lg font-bold">
         {getInitials(projectName)}
       </div>

@@ -21,11 +21,12 @@ const cardData = [
   },
 ];
 
-const AddPodcastCards = ({ onPinClick }) => {
+const AddPodcastCards = ({ onPinClick, setUploadOpen }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-6">
       {cardData.map((card) => (
         <div
+          onClick={()=> setUploadOpen(true)}
           key={card.title}
           className="bg-white rounded-lg shadow p-4 flex justify-between items-start hover:shadow-md transition"
         >
@@ -44,8 +45,7 @@ const AddPodcastCards = ({ onPinClick }) => {
             <button
               onClick={() => onPinClick && onPinClick(card.title)}
               className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-gray-100 transition"
-            >
-            </button>
+            ></button>
           </div>
         </div>
       ))}

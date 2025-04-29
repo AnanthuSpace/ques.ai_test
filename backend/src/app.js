@@ -4,6 +4,7 @@ dotenv.config();
 import connectDB from './config/dbConnection.js';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js'
 import { errorHandler } from './middleware/errorHandler.js';
 
 connectDB()
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes)
+app.use("/api", userRoutes)
 
 app.use((req, res) => {
   res.status(404).send('Page Not Found');

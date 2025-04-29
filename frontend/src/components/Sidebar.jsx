@@ -1,6 +1,8 @@
 import { Plus, PenLine, Radio, ArrowUp, HelpCircle, ChevronLeft } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 export default function Sidebar() {
+    const navigate = useNavigate()
   return (
     <div className="w-64 bg-white h-screen flex flex-col border-r border-gray-200 relative">
       <div className="p-10 flex items-center">
@@ -45,7 +47,7 @@ export default function Sidebar() {
 
         <div className="border-t border-gray-200 my-2"></div>
 
-        <div className="p-4 flex items-center gap-3">
+        <div className="p-4 flex items-center gap-3" onClick={()=> navigate("/profile")}>
           <div className="w-8 h-8 rounded-full bg-green-500 overflow-hidden">
             <img src="/placeholder.svg?height=32&width=32" alt="User avatar" className="w-full h-full object-cover" />
           </div>

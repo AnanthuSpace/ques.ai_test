@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { ArrowLeft, Bell, LogOut } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { useNavigate } from "react-router-dom";
+import LogoutIcone from "../components/LogoutIcone";
 
 const PodcastPage = () => {
+    const navigate = useNavigate()
   const [isEditing, setIsEditing] = useState(false);
   const [originalTranscript, setOriginalTranscript] = useState(`
 
@@ -14,7 +17,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 
   const handleToggleEdit = () => {
     if (isEditing) {
-      setOriginalTranscript(transcript); // Save changes
+      setOriginalTranscript(transcript); 
     }
     setIsEditing(!isEditing);
   };
@@ -32,20 +35,13 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
       <div className="flex-1 flex flex-col bg-gray-100 p-7 overflow-auto">
         <header className="flex items-center justify-between px-6 py-4">
           <Breadcrumbs projectName="Sample Project" />
-          <div className="flex items-center space-x-4">
-            <button className="p-2 bg-white rounded-full shadow border border-gray-500 hover:bg-gray-100 transition">
-              <Bell className="w-6 h-6 text-gray-600" />
-            </button>
-            <button className="p-2 bg-white rounded-full shadow border border-gray-500 hover:bg-gray-100 transition">
-              <LogOut className="w-6 h-6 text-red-500" />
-            </button>
-          </div>
+          <LogoutIcone/>
         </header>
 
         <main className="flex-1 overflow-auto">
           {/* Top Bar */}
           <div className="flex justify-between items-center py-4 px-6">
-            <div className="flex items-center">
+            <div className="flex items-center" onClick={()=> navigate(-1)}>
               <button className="mr-2">
                 <ArrowLeft size={20} />
               </button>

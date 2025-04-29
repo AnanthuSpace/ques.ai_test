@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PodcastList = ({ podcasts, setPodcasts }) => {
-  const handleView = (id) => {
-    console.log(`Viewing podcast ${id}`);
+  const navigate = useNavigate();
+  const handleView = () => {
+    navigate("/podcast");
   };
 
   const handleDelete = (id) => {

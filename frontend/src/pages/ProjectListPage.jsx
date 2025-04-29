@@ -3,7 +3,6 @@ import ProjectCard from "../components/ProjectCard";
 import { Plus } from "lucide-react";
 
 const ProjectListPage = ({ projects = [], onCreate }) => {
-  console.log(projects)
   return (
     <>
       <div className="flex items-center justify-between mb-6 px-6">

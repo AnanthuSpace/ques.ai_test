@@ -1,47 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import CreateProjectModal from "../components/CreateProjectModal";
 import ProjectListPage from "./ProjectListPage";
+import { createProjectApi, fetchProjectsApi } from "../api/userApi";
+import { toast } from "sonner";
 
 const HomePage = () => {
-  const projectsDetails = [
-    {
-      projectName: "Sample Project",
-      fileCount: 12,
-      lastUpdated: "2025-04-27T10:00:00Z",
-    },
-    {
-      projectName: "Alpha Beta",
-      fileCount: 5,
-      lastUpdated: "2025-04-26T14:30:00Z",
-    },
-    {
-      projectName: "Sample Project",
-      fileCount: 12,
-      lastUpdated: "2025-04-27T10:00:00Z",
-    },
-    {
-      projectName: "Alpha Beta",
-      fileCount: 5,
-      lastUpdated: "2025-04-26T14:30:00Z",
-    },
-    {
-      projectName: "Sample Project",
-      fileCount: 12,
-      lastUpdated: "2025-04-27T10:00:00Z",
-    },
-    {
-      projectName: "Alpha Beta",
-      fileCount: 5,
-      lastUpdated: "2025-04-26T14:30:00Z",
-    },
-  ];
-  const [projects, setProjects] = useState(projectsDetails);
+  const [projects, setProjects] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCreateProject = (projectName) => {
-    console.log("Creating Project:", projectName);
-    setIsModalOpen(false);
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetchProjectsApi();
+        setProjects(res.projects);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const handleCreateProject = async (projectName) => {
+    try {
+      const res = await createProjectApi(projectName);
+      toast.success(res.message);
+      setProjects((prev) => [res.project, ...prev]);
+      setIsModalOpen(false);
+    } catch (error) {
+      toast.error(error);
+      console.error("Error creating project:", error);
+    }
   };
 
   return (
@@ -57,11 +47,8 @@ const HomePage = () => {
           />
 
           <p className="max-w-2xl text-gray-600">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in.
+            Create your first project to get started. You can organize files and
+            edit transcripts with ease.
           </p>
 
           <button

@@ -29,7 +29,7 @@ const LoginPage = () => {
       
       if (response.success) {
         toast.success(response.message || "Login successful");
-        localStorage.setItem("accessToken", response.token)
+        sessionStorage.setItem("accessToken", response.token)
         navigate("/");
       } else {
         toast.error(response.message || "Login failed");

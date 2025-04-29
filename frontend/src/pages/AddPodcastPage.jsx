@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { Bell, LogOut } from "lucide-react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import AddPodcastCards from "../components/AddPodcastCards";
 import UploadModal from "../components/UploadModal";
 import PodcastList from "../components/PodcastList";
+import { useLocation } from "react-router-dom";
+import LogoutIcone from "../components/LogoutIcone";
 
 const defaultPodcasts = [
   {
@@ -28,6 +29,9 @@ const defaultPodcasts = [
 ];
 
 const AddPodcastPage = () => {
+  const location = useLocation();
+  const { projectName } = location.state || {};
+
   const [isUploadOpen, setUploadOpen] = useState(false);
   const [podcasts, setPodcasts] = useState(defaultPodcasts);
 
@@ -53,15 +57,8 @@ const AddPodcastPage = () => {
       <Sidebar />
       <div className="flex-1 flex flex-col bg-gray-100 p-7">
         <header className="flex items-center justify-between px-6 py-4">
-          <Breadcrumbs projectName="Sample Project" />
-          <div className="flex items-center space-x-4">
-            <button className="p-2 bg-white rounded-full shadow border border-gray-500 hover:bg-gray-100 transition">
-              <Bell className="w-6 h-6 text-gray-600" />
-            </button>
-            <button className="p-2 bg-white rounded-full shadow border border-gray-500 hover:bg-gray-100 transition">
-              <LogOut className="w-6 h-6 text-red-500" />
-            </button>
-          </div>
+          <Breadcrumbs projectName={projectName} />
+          <LogoutIcone/>
         </header>
 
         <main className="flex-1 overflow-auto ps-6">
@@ -69,6 +66,7 @@ const AddPodcastPage = () => {
 
           {/* Podcast cards */}
           <AddPodcastCards
+            setUploadOpen={setUploadOpen}
             podcasts={podcasts}
             onPinClick={(title) => console.log("Pin clicked:", title)}
           />

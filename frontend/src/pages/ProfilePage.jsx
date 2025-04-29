@@ -1,29 +1,29 @@
-import { ArrowLeft, Bell, LogOut } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { useNavigate } from "react-router-dom";
+import LogoutIcone from "../components/LogoutIcone";
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 flex flex-col bg-gray-100 p-7 overflow-auto">
         <header className="flex items-center justify-between px-6 py-4">
           <Breadcrumbs projectName="Sample Project" />
-          <div className="flex items-center space-x-4">
-            <button className="p-2 bg-white rounded-full shadow border border-gray-300 hover:bg-gray-100 transition">
-              <Bell className="w-6 h-6 text-gray-600" />
-            </button>
-            <button className="p-2 bg-white rounded-full shadow border border-gray-300 hover:bg-gray-100 transition">
-              <LogOut className="w-6 h-6 text-red-500" />
-            </button>
-          </div>
+          <LogoutIcone />
         </header>
 
         <main className="flex-1 overflow-auto">
           <div className=" p-8">
             {/* Header */}
             <div className="flex items-center mb-8">
-              <button className="mr-2 p-2 rounded hover:bg-gray-200 transition">
+              <button
+                className="mr-2 p-2 rounded hover:bg-gray-200 transition"
+                onClick={() => navigate(-1)}
+              >
                 <ArrowLeft size={20} />
               </button>
               <h1 className="text-2xl font-bold">Account Settings</h1>
